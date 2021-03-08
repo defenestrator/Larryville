@@ -2,8 +2,10 @@
 
 ## You can see the source
 
-### No other license is granted for use of any kind
+### No other license is granted
 
-This work is not suitable for anything, it has no implied or explicit value, nor warranties of any kind.
+This work is not suitable for anything, it has no implied or explicit value, nor any warranties of any kind. It is not suitable to a particular purpose nor does it make any claims.
+
+This agreement may be updated by the author at any time. 
 
 &copy; Jeremy Jacob Anderson 2021, rights reserved.

@@ -20,7 +20,5 @@ Your Personal Access Token should (for your own safety) be configured thusly:
 
 This is here for my pleasure, not yours.
 
-No license granted. 
-
-Source visible, &copy; all other rights reserved, 2021 by Jeremy Jacob Anderson
+[Source visible](LICENSE.MD), &copy; all rights reserved, 2021 by Jeremy Jacob Anderson
 
