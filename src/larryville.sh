@@ -99,11 +99,20 @@ git commit -m "initial"
 
 if [[ TOKEN && ${#TOKEN} == 40 ]] 
 then
+    STATUS=$(http -hdo ./body https://api.github.com/user/repos\?access_token\=${TOKEN} 2>&1 | grep HTTP/  | cut -d ' ' -f 2)
+    if [[ ${STATUS} != 200 ]]
+    then
+        printf "${red_bold}Your github name and or access token appear to be invalid.\n Received HTTP error response ${STATUS}\n${end}"
+        rm -f ./body
+        exit 1
+    fi
     http post https://api.github.com/user/repos\?access_token\=${TOKEN} name="${PWD##*/}" description="${DESCRIPTION}" homepage="${DOMAIN}" private:=false
     git remote add origin git@github.com:${NAME}/${PWD##*/}.git
     git push -u origin main
+    rm -f ./body
 else
     printf "${red_bold}Your github name and or access token appear to be invalid.\n${end}"
 fi
 
 echo "${yel}Welcome to${end} ${red_bold}Larryville${end}${yel}, let's get to work on ${APP}!${end}"
+exit 0
