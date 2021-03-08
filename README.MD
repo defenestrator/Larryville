@@ -7,7 +7,7 @@
 ____
 #### Requirements:
 
-- A Bash-like shell. If you don't have this already, you probably need to install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) to get started.
+- A Bash-like shell. Maybe [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)?
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - A [GitHub](https://github.com/) account
 - A [personal access token](https://github.com/settings/tokens) with access to create repos.
