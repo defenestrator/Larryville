@@ -4,7 +4,8 @@
 
 ### Eventually this might be an awesome Laravel configuration system, maybe.
 
-If you plan on using it, and I wish you wouldn't, you'll need:
+____
+#### Requirements:
 
 - A Bash-like shell. If you don't have this already, you probably need to install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) to get started.
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
@@ -13,12 +14,13 @@ If you plan on using it, and I wish you wouldn't, you'll need:
 - [httpie](https://httpie.io)
 - [composer](https://getcomposer.org/)  
 - [laravel/installer](https://packagist.org/packages/laravel/installer) 
+____
 
-Your Personal Access Token should (for your own safety) be configured thusly: 
+The Personal Access Token should (for safety) be configured thusly: 
 
 ![Image of Personal Access Token scope configuration](assets/token.scopes.png)
 
-This is here for my pleasure, not yours.
+This exists for my pleasure.
 
 [Source visible](LICENSE.MD), &copy; all rights reserved, 2021 by Jeremy Jacob Anderson
 
