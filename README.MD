@@ -4,7 +4,7 @@
 
 ### Eventually this might be an awesome Laravel configuration system, maybe.
 
-If you plan on using it, and I wish you wouldn't, but you'll need:
+If you plan on using it, and I wish you wouldn't, you'll need:
 
 - A Bash-like shell. If you don't have this already, you probably need to install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) to get started.
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
