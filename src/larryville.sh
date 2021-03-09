@@ -15,11 +15,11 @@ end=$'\e[0m'
 printf "${wh_bold}Welcome to Larryville, a real nice place to raise your kids up!\n${end}${grn}Larryville helps you set up a new Laravel project on GitHub.\n${yel}If you do not care for Laravel and GitHub, scram!${end}\n"
 read -p "${cyn}In which (empty or new) directory shall we do a Larryville?${end} " DIRECTORY
 
-if [ ${#DIRECTORY} == 0 ]
+if [[ ${#DIRECTORY} == 0 ]]
 then
     printf "${red_bold}You must specify a directory.\n${end}"
     read -p "${cyn}In which (empty or new) directory do you want to Larryville?${end} " DIRECTORY
-    if [ ${#DIRECTORY} == 0 ]
+    if [[ ${#DIRECTORY} == 0 ]]
     then
         printf "${red_bold}You must specify a directory.\nExiting.\nFigure it out.\n${end}"
         exit 1
@@ -54,7 +54,7 @@ else
     then
         read -p "${cyn}What is your Github Name?${end} " NAME
         echo ${NAME}
-        printf "Is that the correct name? y/n:\n" -n 1 -r CORRECT
+        read -p "Is that the correct name? y/n:" -n 1 -r CORRECT
         echo 
         if [[ ! $CORRECT =~ ^[Yy]$ ]]
         then                
@@ -71,7 +71,8 @@ else
         then
             printf "${red_bold}Your github access token appears to be invalid.\n Received HTTP error response ${STATUS}\n Name:${NAME}\nToken:${TOKEN}\n${end}" 
             exit 0
-        else            
+        else
+            echo "${cyn}Those credentials appear to be valid, saving config.${end}"            
             printf "GH_TOKEN=${TOKEN}\nGH_NAME=${NAME}\n" > .larryville.config
         fi
         if [[ -f response_body ]]
@@ -81,9 +82,10 @@ else
     else
         printf "${yel}Your github access token appears to be invalid.\n${end}"
         read -p "${red_bold}Do you want to continue without GitHub? y/n: ${end} " -n 1 -r REPLY
+        echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]
         then
-            "${cyn}Exiting; GitHub configuration is incorrect ${end}"
+            echo "${cyn}Exiting; GitHub configuration is incorrect ${end}"
             exit 0
         fi
     fi
