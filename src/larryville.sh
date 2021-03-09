@@ -50,7 +50,7 @@ else
     echo ${NAME}
     read -p "${cyn}Is that the correct name? y/n: ${end} " -n 1 -r CORRECT
     echo
-        if [[ ! $CORRECT =~ ^[Yy]$ ]]
+    if [[ ! $CORRECT =~ ^[Yy]$ ]]
     then
         read -p "${cyn}What is your Github Name?${end} " NAME
         echo ${NAME}
