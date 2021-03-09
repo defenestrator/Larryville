@@ -48,37 +48,65 @@ then
 else
     read -p "${cyn}What is your Github Name?${end} " NAME
     echo ${NAME}
-    read -p "${cyn}Is that the correct name? y/n: ${end} " -n 1 -r CORRECT
-    echo
-    if [[ ! $CORRECT =~ ^[Yy]$ ]]
+    if [[ ${#NAME} == 0 ]]
     then
+        read -p "${red_bold}Do you want to continue without GitHub? y/n: ${end} " -n 1 -r REPLY
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
+            "${cyn}Continuing without git ${end}"
+            if [ -f .larryville.config ] 
+            then
+                rm .larryville.config
+            fi
+        fi
+    else
         read -p "${cyn}What is your Github Name?${end} " NAME
         echo ${NAME}
-        printf "Is that the correct name?\n" -n 1 -r CORRECT
+        read -p "${cyn}Is that the correct name? y/n: ${end} " -n 1 -r CORRECT
         echo
         if [[ ! $CORRECT =~ ^[Yy]$ ]]
         then
-            echo "${red_bold}Exiting; GitHub configuration is incorrect ${end} "
-            printf "${yel}You must be able to type your github username to ride this ride.\nExiting.\n${red_bold}Figure it out.\n${end}"
-            exit 0
+            read -p "${cyn}What is your Github Name?${end} " NAME
+            echo ${NAME}
+            printf "Is that the correct name? y/n:\n" -n 1 -r CORRECT
+            echo 
+            if [[ ! $CORRECT =~ ^[Yy]$ ]]
+            then                
+                echo "${red_bold}Exiting; GitHub configuration is incorrect ${end} "
+                printf "${yel}You must be able to type your github username to ride this ride.\nExiting.\n${red_bold}Figure it out.\n${end}"
+                exit 0
+            fi
+        fi
+        read -p "${cyn}Github Access Token?${end} " TOKEN
+        if [[ ${#TOKEN} == 40 ]]
+        then
+            STATUS=$(http -hdo ./response_body https://api.github.com/user/repos\?access_token\=${TOKEN} 2>&1 | grep HTTP/  | cut -d ' ' -f 2)
+            if [[ ${STATUS} != 200 ]]
+            then
+                printf "${red_bold}Your github access token appears to be invalid.\n Received HTTP error response ${STATUS}\n Name:${NAME}\nToken:${TOKEN}\n${end}" 
+            else            
+                printf "GH_TOKEN=${TOKEN}\nGH_NAME=${NAME}\n" > .larryville.config
+            fi
+            if [ -f ./response_body ] 
+                rm ./response_body    
+            fi
+        else
+            printf "${yel}Your github access token appears to be invalid.\n${end}"
+            read -p "${red_bold}Do you want to continue without GitHub? y/n: ${end} " -n 1 -r REPLY
+            if [[ ! $REPLY =~ ^[Yy]$ ]]
+            then
+                "${cyn}Exiting; GitHub configuration is incorrect ${end}"
+                if [ -f .larryville.config ] 
+                then
+                    rm .larryville.config
+                fi
+                exit 0
+            fi
         fi
     fi
-    read -p "${cyn}Github Access Token?${end} " TOKEN
-    if [[ ${#TOKEN} == 40 ]]
-    then
-        printf "GH_TOKEN=${TOKEN}\nGH_NAME=${NAME}\n" > .larryville.config
-    fi
 fi
-if [[ ! ${#TOKEN} == 40 ]]
-then
-    printf "${red_bold}Your github access token appears to be invalid.\n${end}"
-    read -p "${red_bold}Do you want to continue without GitHub? y/n: ${end} " -n 1 -r REPLY
-    if [[ ! $REPLY =~ ^[Yy]$ ]]
-    then
-        "${cyn}Exiting; GitHub configuration is incorrect ${end} "
-        exit 0
-    fi
-fi
+
+    
 
 if [ -d ${DIRECTORY} ] 
 then
@@ -96,21 +124,27 @@ git init
 git add .
 git commit -m "initial"
 
-if [[ TOKEN && ${#TOKEN} == 40 ]] 
+if [[ ${#TOKEN} == 40 ]]
 then
-    STATUS=$(http -hdo ./body https://api.github.com/user/repos\?access_token\=${TOKEN} 2>&1 | grep HTTP/  | cut -d ' ' -f 2)
+    STATUS=$(http -hdo ./response_body https://api.github.com/user/repos\?access_token\=${TOKEN} 2>&1 | grep HTTP/  | cut -d ' ' -f 2)
     if [[ ${STATUS} != 200 ]]
     then
-        printf "${red_bold}Your github name and or access token appear to be invalid.\n Received HTTP error response ${STATUS}\n${end}"
-        cat ./body
-        rm -f ./body
+        printf "${red_bold}Your github name and or access token appear to be invalid.\n Received HTTP error response ${STATUS}\n Name:${NAME}\nToken:${TOKEN}\n${end}"
+        if [ -f .larryville.config ] 
+        then
+            rm .larryville.config
+        fi
+        if [ -f ./response_body ] 
+            rm ./response_body    
+        fi
         exit 1
     fi
     http post https://api.github.com/user/repos\?access_token\=${TOKEN} name="${DIRECTORY}" description="${DESCRIPTION}" homepage="${DOMAIN}" private:=false
     git remote add origin git@github.com:${NAME}/${DIRECTORY}.git
     git push -u origin main
-    rm -f ./body    
 fi
-
+if [ -f ./response_body ] 
+    rm ./response_body    
+fi
 echo "${yel}Welcome to${end} ${red_bold}Larryville${end}${yel}, let's get to work on ${APP}!${end}"
 exit 0
