@@ -45,7 +45,7 @@ then
     . .larryville.config
     TOKEN=$GH_TOKEN
     NAME=$GH_NAME
-else  
+else
     read -p "${cyn}What is your Github Name?${end} " NAME
     echo ${NAME}
     read -p "${cyn}Is that the correct name? y/n: ${end} " -n 1 -r CORRECT
@@ -69,7 +69,7 @@ else
         STATUS=$(http -hdo ./response_body https://api.github.com/user/repos\?access_token\=${TOKEN} 2>&1 | grep HTTP/  | cut -d ' ' -f 2)
         if [[ ${STATUS} != 200 ]]
         then
-            printf "${red_bold}Your github access token appears to be invalid.\n Received HTTP error response ${STATUS}\n Name:${NAME}\nToken:${TOKEN}\n${end}" 
+            printf "${red_bold}Your github access token or username appears to be invalid.\n Received HTTP error response ${STATUS}\n Name:${NAME}\nToken:${TOKEN}\n${end}" 
             exit 0
         else
             echo "${cyn}Those credentials appear to be valid, saving config.${end}"            
